@@ -13,40 +13,31 @@
 # library(zip)
 library(readxl)
 
-Sys.setlocale('LC_ALL', 'C')
+#Sys.setlocale('LC_ALL', 'C')
 
 #####################
 #####Reading data####
 #####################
-#fmri_steps <- read_excel("fMRI_steps.xlsx")
-#fmri_options <- read_excel('fMRI_options.xlsx')
-question <- read_excel('Questions_rf.xlsx')
-#equival <- read_excel('Equival.xlsx')
 countryList <- read_excel("CountryList.xlsx")
-desc_dims <- read_excel("Dimensions.xlsx")
 
-#behav_steps <- read_excel("Steps_Behavior.xlsx", sheet = "Steps")
-#behav_options <- read_excel("Steps_Behavior.xlsx", sheet = "Options")
-#model_steps <- read_excel("Steps_Brain_Behavior.xlsx", sheet = "Steps")
-#model_options <- read_excel("Steps_Brain_Behavior.xlsx", sheet = "Options")
+
+# question <- read_excel('Questions.xlsx')
+# desc_dims <- read_excel("Dimensions.xlsx")
+
+
+## Reading data with google sheets
+library(gsheet)
+desc_dims <- gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/11ns4vgDIafxQmlEun4xLNHWd0Cj1KtrJHYWZn5p7L9Q/edit?usp=sharing")
+question <- gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1_3_-2JfLLYA5mI--k6sDs12LlS6pGtkMilNQG_wdw8k/edit?usp=sharing")
+# library(rio)
+# export(question, file="survey/Questions.xlsx")
+# export(desc_dims, file="survey/Dimensions.xlsx")
+
+
 options_matrix <- c("Not at all different", "Slighly different", "Substantially different", "Unknown/uncontrolled", "Not applicable")
 aspects_matrix = desc_dims[["Dimension"]]
-# c(
-#   "Computational Environment",
-#   "Analysis Code",
-#   "Statistical Analysis",
-#   "Data",
-#   "Sample Properties",
-#   "Operationalisation (IV)",
-#   "Operationalisation (DV)",
-#   "Research Question"
-# )
 n_options <- length(options_matrix)
 n_aspects <- length(aspects_matrix)
-
-dav <- "https://cloud.uol.de/remote.php/webdav/Output_survey"
-username <- "mort4924"
-password <- "StatSpaßfUnity22.+"
 
 
 
