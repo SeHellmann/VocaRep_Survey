@@ -3,6 +3,7 @@ library(shinydashboard)
 library(shinydashboardPlus)
 library(shinyjs)
 library(stringi)
+library(googledrive)
 #library(dplyr)
 #library(stringr)
 #library(png)
@@ -241,12 +242,14 @@ observeEvent(input$end_survey, {
     
     sanitized_id <- gsub("[^[:alnum:]]", "_", stri_trans_general(input$Expert_ID, "Any-Latin; Latin-ASCII"))
     save_file_name <- sprintf("%s_data_%s.txt", sanitized_id, as.integer(Sys.time()))
-    save_file_name <- file.path(save_dir, save_file_name)
+    full_save_file_name <- file.path(save_dir, save_file_name)
     data_df <- participantInputs()
-    write.csv(data_df, file=save_file_name)
+    write.csv(data_df, file=full_save_file_name)
+    drive_upload(full_save_file_name, path = "VocaRep_Survey", name = save_file_name)
+#     https://drive.google.com/drive/folders/1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb?usp=sharing
     showModal(modalDialog(
       title = "Survey Ended!",
-      "Thank you for your participation. Your data has been saved.",
+      "Thank you for your participation. Your data has been saved. You can now close the survey.",
       easyClose = TRUE,
       footer = tagList(
         modalButton("Close")

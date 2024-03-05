@@ -150,7 +150,7 @@ ui <- dashboardPage(title = "Survery Meteor", skin = "black",
                                   width = 12,
                                   solidHeader = TRUE,
                                   textInput(question$Code[1], question$Question[1]), # Name
-                                  selectInput(question$Code[2], question$Question[2], choices = countryList, selected = NULL), # Country
+                                  textInput(question$Code[2], question$Question[2]), # Country
                                   textInput(question$Code[3], question$Question[3]), # Affiliation
                                   # Position: (text, if "Other")
                                   checkboxGroupInput(question$Code[4], question$Question[4], choices = as.character(strsplit(question$Options[4], ";")[[1]])),
@@ -158,7 +158,7 @@ ui <- dashboardPage(title = "Survery Meteor", skin = "black",
                                   # Field of Study: (text, if "Other")
                                   selectInput(question$Code[6], question$Question[6], choices = as.character(strsplit(question$Options[6], ";")[[1]]), selected = NULL),
                                   textInput(question$Code[7], question$Question[7]),
-                                  shinysurveys::numberInput(question$Code[8], question$Question[8], placeholder = 4), # Years of Research experience
+                                  shinysurveys::numberInput(question$Code[8], question$Question[8], placeholder = NULL, min=0), # Years of Research experience
                                   # Previous Experience with Redoing studies, if, yes, describe broadly
                                   checkboxInput(question$Code[9], question$Question[9]),#, choices = as.character(strsplit(question$Options[9], ";")[[1]])),
                                   textInput(question$Code[10], question$Question[10]),

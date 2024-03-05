@@ -33,11 +33,18 @@ question <- gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1_3_-2JfL
 # export(question, file="survey/Questions.xlsx")
 # export(desc_dims, file="survey/Dimensions.xlsx")
 
-
 options_matrix <- c("Not at all different", "Slighly different", "Substantially different", "Unknown/uncontrolled", "Not applicable")
 aspects_matrix = desc_dims[["Dimension"]]
 n_options <- length(options_matrix)
 n_aspects <- length(aspects_matrix)
 
+
+library(googledrive)
+options(
+  # whenever there is one account token found, use the cached token
+  gargle_oauth_email = TRUE,
+  # specify auth tokens should be stored in a hidden directory ".secrets"
+  gargle_oauth_cache = ".secrets"
+)
 
 
