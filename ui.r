@@ -150,7 +150,8 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   width = 12,
                                   solidHeader = TRUE,
                                   textInput(question$Code[1], question$Question[1]), # Name
-                                  textInput(question$Code[2], question$Question[2]), # Country
+                                  selectInput(question$Code[2], question$Question[2], choices = countryList, selected = NULL), # Country
+                                  #textInput(question$Code[2], question$Question[2]), # Country
                                   textInput(question$Code[3], question$Question[3]), # Affiliation
                                   # Position: (text, if "Other")
                                   checkboxGroupInput(question$Code[4], question$Question[4], choices = as.character(strsplit(question$Options[4], ";")[[1]])),
