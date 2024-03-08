@@ -27,7 +27,7 @@ library(shinyWidgets)
 
 source("Source_function.R")
 
-ui <- dashboardPage(title = "Survery Meteor", skin = "black",
+ui <- dashboardPage(title = "Replication Survey", skin = "black",
                     ######################End of Dashboard Page############
                     dashboardHeader(title = img(src="metarep.jpg", height = "100%"), titleWidth = '230px'
                     ),
@@ -179,27 +179,6 @@ ui <- dashboardPage(title = "Survery Meteor", skin = "black",
                                 
                         ),
                         tabItem(tabName = "rating_obj",
-                                h2(strong("Dummy page for rating the dimensions of comparison in terms of objective differences")),
-                                fluidRow(
-                                do.call(accordion, c(list(id = "descr_accordion1", width=4),# ,open=FALSE),
-                                                     lapply(1:4, function(i){
-                                  accordionItem(
-                                    title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
-                                  )
-                                  }))),
-                                do.call(accordion, c(list(id = "descr_accordion2", width=4),# ,open=FALSE),
-                                                     lapply(5:8, function(i){
-                                                       accordionItem(
-                                                         title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
-                                                       )
-                                                     }))),
-                                do.call(accordion, c(list(id = "descr_accordion3", width=4),# ,open=FALSE),
-                                                     lapply(9:11, function(i){
-                                                       accordionItem(
-                                                         title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
-                                                       )
-                                                     })))
-                                ),
                                 fluidRow(
                                 h3(strong("Please indicate to which extend your re-doing activity deviates from the initial study across the different dimensions.")),
                                 # radioGroupButtons(inputId = "rating_obj_input",
@@ -217,6 +196,27 @@ ui <- dashboardPage(title = "Survery Meteor", skin = "black",
                                 ),
                                 textInput("rep_dims", "If any relevant dimension was missed above, please specify which dimension you specifically changed or kept constant in your study.",
                                           placeholder = "..."),
+                                ),
+                                h2(strong("Click on the dimensions for a detailed description")),
+                                fluidRow(
+                                  do.call(accordion, c(list(id = "descr_accordion1", width=4),# ,open=FALSE),
+                                                       lapply(1:4, function(i){
+                                                         accordionItem(
+                                                           title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
+                                                         )
+                                                       }))),
+                                  do.call(accordion, c(list(id = "descr_accordion2", width=4),# ,open=FALSE),
+                                                       lapply(5:8, function(i){
+                                                         accordionItem(
+                                                           title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
+                                                         )
+                                                       }))),
+                                  do.call(accordion, c(list(id = "descr_accordion3", width=4),# ,open=FALSE),
+                                                       lapply(9:11, function(i){
+                                                         accordionItem(
+                                                           title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
+                                                         )
+                                                       })))
                                 )
                         ),
                         tabItem(tabName = "rating_exp",
