@@ -21,6 +21,7 @@ conflicts_prefer(shinydashboardPlus:: accordion)
 conflicts_prefer(shinydashboard::box)
 library(shinysurveys)
 #shinysurveys::radioMatrixInput()
+library(shinyBS)
 
 library(shinyWidgets)
 #radioGroupInput
@@ -369,10 +370,14 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                         tabItem(tabName = "rating_obj",
                                 fluidRow(
                                 h3(strong("Please indicate to which extend your re-doing activity deviates from the initial study across the different dimensions.")),
-                                # radioGroupButtons(inputId = "rating_obj_input",
-                                #                   label = desc_dims[["Dimension"]][1],
-                                #                   choices = c("Not at all different", "Slighly different", "Substantially different", "Unknown/uncontrolled", "Not applicable"),
-                                #                   direction="horizontal", justified = TRUE),
+                                
+                                popify(radioGroupButtons(inputId = "rating_obj_input",
+                                                  label = desc_dims[["Dimension"]][1],
+                                                  choices = c("Not at all different", "Slighly different", "Substantially different", "Unknown/uncontrolled", "Not applicable"),
+                                                  direction="horizontal", justified = TRUE),
+                                
+                                       "This includes the demographics, number, and selection criteria of participants. Authors could specify if the replication involved participants with similar characteristics (age, gender, cultural background) or if they varied these to examine effects across different groups.", placement = "left", options = list(container = "body")),
+                                
                                 # radioGroupButtons(inputId = "rating_obj_input", 
                                 #                   label = desc_dims[["Dimension"]][1],
                                 #                   choiceNames = rep("", 5), choiceValues = 1:5,
@@ -382,8 +387,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   "ratingmatrix1",
                                   responseItems= aspects_matrix, choices = options_matrix, .required=FALSE
                                 ),
-                                textInput("rep_dims", "If any relevant dimension was missed above, please specify which dimension you specifically changed or kept constant in your study.",
-                                          placeholder = "..."),
+                                textInput("rep_dims", "If any relevant dimension was missed above, please specify which dimension you specifically changed or kept constant in your study.", placeholder = "..."),
                                 ),
                                 h2(strong("Click on the dimensions for a detailed description")),
                                 fluidRow(
