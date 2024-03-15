@@ -27,7 +27,7 @@ server <- function(input, output, session){
   # dir.create(tmp_dir, showWarnings = FALSE)
   
   ## Next and previous button
-  tab_id <- c("about", "person", "study", "redo_desc", 
+  tab_id <- c("about", "study", "originalstudy", 
               "rating_obj", "rating_exp", "rating_intent", "comment")
   
   # observe({
@@ -76,6 +76,14 @@ server <- function(input, output, session){
         showModal(modalDialog(
           title = "Warning",
           "Please indicate the difference in all dimensions!",
+          easyClose = TRUE,
+          footer = modalButton("Close"),
+          size = "l"
+        ))
+      } else if (Current$Tab == "about" && (input[["part_conf1"]]!="Yes")) {
+        showModal(modalDialog(
+          title = "Please confirm your consent",
+          "Please confirm that you have read and agree with the participant information.",
           easyClose = TRUE,
           footer = modalButton("Close"),
           size = "l"
@@ -222,31 +230,27 @@ server <- function(input, output, session){
 
 ### Submit button
 observeEvent(input$end_survey, {
-  if (is.null(input$Expert_ID) || input$Expert_ID == "") {
-    showModal(modalDialog(
-      title = "Warning",
-      "Your ID is empty. Please enter your Last Name in About tab.",
-      easyClose = TRUE,
-      footer = modalButton("Close"),
-      size = "l"
-    ))
-  } else {
     # data_to_save <- data.frame(ParticipantID = participant_id,
     #                            Question = survey_question,
     #                            ReplicationActivity = replication_activity,
     #                            stringsAsFactors = FALSE)
     # 
     # write.csv(data_to_save, "survey_data.csv", row.names = FALSE)
-    
-    
-    
-    sanitized_id <- gsub("[^[:alnum:]]", "_", stri_trans_general(input$Expert_ID, "Any-Latin; Latin-ASCII"))
-    save_file_name <- sprintf("%s_data_%s.txt", sanitized_id, as.integer(Sys.time()))
+  if (input[["part_conf2"]]!="Yes") {
+    showModal(modalDialog(
+      title = "Warning",
+      "Please confirm your consent to the participation.",
+      easyClose = TRUE,
+      footer = modalButton("Close"),
+      size = "l"
+    ))
+  } else {
+    save_file_name <- sprintf("data_%s.txt", as.integer(Sys.time()))
     full_save_file_name <- file.path(save_dir, save_file_name)
     data_df <- participantInputs()
     write.csv(data_df, file=full_save_file_name)
     drive_upload(full_save_file_name, path = as_id("1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb"), name = save_file_name)
-#     https://drive.google.com/drive/folders/1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb?usp=sharing
+  #     https://drive.google.com/drive/folders/1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb?usp=sharing
     showModal(modalDialog(
       title = "Survey Ended!",
       "Thank you for your participation. Your data has been saved. You can now close the survey.",
