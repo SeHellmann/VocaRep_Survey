@@ -88,7 +88,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   "Nowadays, many researchers re-do scientific activities 
                                   in multiple different forms as part of meta-scientific 
                                   endeavors. As members of a study group within the",
-                                  tags$a(href='https://meta-rep.de/', "Meta-Rep project"),
+                                  tags$a(href='https://www.meta-rep.uni-muenchen.de/index.html', "Meta-Rep project"),
                                   "project, we are conducting a survey to examine the 
                                   generalizability of scientific studies and theories. 
                                   Our objective is to ascertain the extent to which 
@@ -105,7 +105,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   "Thank you very much for your participation,",br(), br(),
                                   "Prof. Dr. Felix Schönbrodt (LMU Munich) & the terminology 
                                   working group of the",
-                                  tags$a(href='https://meta-rep.de/', "Meta-Rep project"),br(), br(),
+                                  tags$a(href='https://www.meta-rep.uni-muenchen.de/index.html', "Meta-Rep project"),br(), br(),
                                   "Under the following headings, you will find more detailed 
                                   information about the study and data protection information. 
                                   Simply click on the individual questions if you would like
