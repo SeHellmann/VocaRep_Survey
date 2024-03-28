@@ -193,7 +193,7 @@ observeEvent(input$end_survey, {
     full_save_file_name <- file.path(save_dir, save_file_name)
     data_df <- participantInputs()
     write.csv(data_df, file=full_save_file_name)
-    drive_upload(full_save_file_name, path = as_id("1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb"), name = save_file_name)
+    #drive_upload(full_save_file_name, path = as_id("1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb"), name = save_file_name)
   #     https://drive.google.com/drive/folders/1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb?usp=sharing
     showModal(modalDialog(
       title = "Survey Ended!",
