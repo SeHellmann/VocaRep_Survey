@@ -100,7 +100,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   in multiple different forms as part of meta-scientific 
                                   endeavors. As members of a study group within the",
                                   tags$a(href='https://www.meta-rep.uni-muenchen.de/index.html', "Meta-Rep project"),
-                                  "project, we are conducting a survey to examine the 
+                                  ", we are conducting a survey to examine the 
                                   generalizability of scientific studies and theories. 
                                   Our objective is to ascertain the extent to which 
                                   research findings can be applicable across diverse 
