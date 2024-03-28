@@ -37,17 +37,27 @@ desc_dims <- gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/11ns4vgD
 # export(question, file="survey/Questions.xlsx")
 # export(desc_dims, file="survey/Dimensions.xlsx")
 
-options_matrix <- c("Not at all different", "Slighly different", "Substantially different", "Unknown/ uncontrolled", "Not applicable")
-options_matrix_expectations <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable")
+options_matrix_objective <- c("Yes, there was a single change", "Yes, there was a set of changes", "No", "Unknown/ uncontrolled", "Not applicable", "Cannot answer")
 options_matrix_intentions <- list("Theoretically motivated", "Pragmatically motivated", "Unmotivated", "Not applicable", "Cannot answer")
-options_matrix_causechanges <- list("Not at all", "Could be", "Probably was", "Definitely", "No suspicion", "Dimension did not change", "Not applicable")
+options_matrix_expectations <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
+options_matrix_causechanges <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
 
 
-aspects_matrix = as.list(desc_dims[["Dimension"]])
-aspects_matrix_span <- list()
+aspects_matrix = desc_dims[["Dimension"]]
+#aspects_matrix_span <- list()
+aspects_matrix_span_objchanges <- list()
+aspects_matrix_span_intentions <- list()
+aspects_matrix_span_expectedchanges <- list()
+aspects_matrix_span_causechanges  <- list()
 for (i in 1:length(aspects_matrix)) {
-  aspects_matrix_span[[i]] <- span(aspects_matrix[[i]], title=desc_dims[["Description"]][i])
+  # The paste with blanks is a work around to omit the radio matrix inputs to be considered identical
+  aspects_matrix_span_objchanges[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], " ")) 
+  aspects_matrix_span_intentions[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "  ")) 
+  aspects_matrix_span_expectedchanges[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "   "))  
+  aspects_matrix_span_causechanges[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "    ")) 
+  
 }
+
 n_options <- length(options_matrix)
 n_aspects <- length(aspects_matrix)
 

@@ -27,8 +27,8 @@ server <- function(input, output, session){
   # dir.create(tmp_dir, showWarnings = FALSE)
   
   ## Next and previous button
-  tab_id <- c("about", "study", "originalstudy", 
-              "ratings_change", "outcome_changes", "comment")
+  tab_id <- c("about", "originalstudy", 
+              "ratings_change", "expected_changes", "outcome_changes", "comment")
   
   # observe({
   #   lapply(c("Next", "Previous"),
@@ -72,10 +72,29 @@ server <- function(input, output, session){
   observeEvent(
     input[["Next"]],
     {
-      if (Current$Tab == "rating_changes" && is.null(input[["ratingmatrix_objchanges"]])) {
+      if (Current$Tab == "ratings_change" && (is.null(input[["ratingmatrix_objchanges"]]) ||
+                                              is.null(input[["ratingmatrix_intentions"]]))) {
         showModal(modalDialog(
           title = "Warning",
-          "Please indicate the difference in all dimensions!",
+          "Please indicate the difference and the intentions in all dimensions!",
+          easyClose = TRUE,
+          footer = modalButton("Close"),
+          size = "l"
+        ))
+      } else if (Current$Tab == "expected_changes" && (is.null(input[["ratingmatrix_expectations"]]) &&
+                 !input[["NoExpectations"]])) {
+        showModal(modalDialog(
+          title = "Warning",
+          "Please state that you have already analyzed the results or indicate the expected influence on the outcome of all dimensions!",
+          easyClose = TRUE,
+          footer = modalButton("Close"),
+          size = "l"
+        ))
+      } else if (Current$Tab == "outcome_changes" && (is.null(input[["ratingmatrix_cause_changes"]]) &&
+                 !input[["NoDifference"]])) {
+        showModal(modalDialog(
+          title = "Warning",
+          "Please state that you have no different results or indicate the suspected influence on the difference in outcomes in all dimensions!",
           easyClose = TRUE,
           footer = modalButton("Close"),
           size = "l"
@@ -102,84 +121,16 @@ server <- function(input, output, session){
   ## For session tuning
   session$allowReconnect(TRUE)
   
-#   ## Output datatable for dimension descriptions?
-#   output$list_steps <- DT::renderDataTable({
-#   DT::datatable(fmri_steps, options = list(pageLength = 25, searchHighlight = TRUE))
-# })
-
-  #############################################################
-  # ## Output for selectOptionF_DYO
-  # output$selectOptionF_DYO <- renderUI({
-  #   st_sel_F <- input$selectStepF_DYO
-  #   opts <- which(fmri_options$Steps==st_sel_F)
-  #   opts_ <- fmri_options[opts, ]
-  #   selectizeInput("selectOptionF_DYO2",
-  #                  label   = "Select the option",
-  #                  choices =  sort(c(opts_$Options)),
-  #                  options=list(create=TRUE),
-  #                  selected = sort(opts_$Options)[1]
-  #   )
-  # })
-  # 
-  # ## Output for selectOptionM_DYO
-  # output$selectOptionM_DYO <- renderUI({
-  #   st_sel_M <- input$selectStepM_DYO
-  #   opts <- which(model_options$Steps==st_sel_M)
-  #   opts_ <- model_options[opts, ]
-  #   selectizeInput("selectOptionM_DYO2",
-  #                  label   = "Select the option",
-  #                  choices =  sort(c(opts_$Options)),
-  #                  options=list(create=TRUE),
-  #                  selected = sort(opts_$Options)[1]
-  #   )
-  # })
-  # 
-  # ## Output for selectOptionB_DYO
-  # output$selectOptionB_DYO <- renderUI({
-  #   st_sel_B <- input$selectStepB_DYO
-  #   opts <- which(behav_options$Steps==st_sel_B)
-  #   opts_ <- behav_options[opts, ]
-  #   selectizeInput("selectOptionB_DYO2",
-  #                  label   = "Select the option",
-  #                  choices =  sort(c(opts_$Options)),
-  #                  options=list(create=TRUE),
-  #                  selected = sort(opts_$Options)[1]
-  #   )
-  # })
-  # 
-  # ## Create table for the pipeline
-  # tableValuesF <- reactiveValues(df = data.frame(Steps = as.character(), Options = as.character(), 
-  #                                                check.names = FALSE))
-  # 
-  # tableValuesM <- reactiveValues(df = data.frame(Steps = as.character(), Options = as.character(), 
-  #                                                check.names = FALSE))
-  # 
-  # tableValuesB <- reactiveValues(df = data.frame(Steps = as.character(), Options = as.character(), 
-  #                                                check.names = FALSE))
-  # ###### Output of Bucket List #####
-  # 
-  # output$outputBucket <- renderText(input$Sparsity1)
-  # output$OutputBucket2 <- renderText(input$Sparsity2)
-  # output$OutputBucket3 <- renderText(input$Sparsity3)
-  # output$OutputBucket4 <- renderText(input$Sparsity4)
-  # output$OutputBucket5 <- renderText(input$Sparsity5)
-  # 
-  ##################################
-  
-
-  
   
   ## Create table for the survey
   StudyInputs <- c("RedoDOI", "OrigDOI",
   "OrigTitle","Objective",
-  "RedoingLabel","Status")
+  "RedoingLabel","Status", "Observedchange")
 #  QualInputNames <- c("rep_description", "rep_label", "rep_dims")
   RatingInputNames <- c("ratingmatrix_objchanges",
-                        "ratingmatrix_expectations",
                         "ratingmatrix_intentions",
+                        "ratingmatrix_expectations",
                         "ratingmatrix_cause_changes")
-  
-  OutcomeInputNames <- c("observedchange")
   
   participantInputs <- reactive({
     data <- data.frame()
@@ -200,16 +151,16 @@ server <- function(input, output, session){
       if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
         cur_matrix <- input[[name]]
         data <- rbind(data, data.frame(Class = "rating", Name = paste0(name, "_", 
-                                                                       aspects_matrix[match(cur_matrix$question_id, aspects_matrix_span)]), 
+                                                                       aspects_matrix), 
                                                                        Response = cur_matrix$response))
       }
     }
-    for (name in OutcomeInputNames) {
-      if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-        data <- rbind(data, 
-                      data.frame(Class = "results", Name = name, Response = input[[name]]))
-      }
-    }
+    # for (name in OutcomeInputNames) {
+    #   if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
+    #     data <- rbind(data, 
+    #                   data.frame(Class = "results", Name = name, Response = input[[name]]))
+    #   }
+    # }
     data <- rbind(data, data.frame(Class="additional", Name="comment", Response = input[["additional_info"]]))
   })
 

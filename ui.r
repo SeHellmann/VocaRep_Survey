@@ -42,7 +42,9 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                                  #menuItem("Participant information", tabName = "person"),
                                                  menuItem("General redoing Information", tabName = "originalstudy"),
                                                  menuItem("Changes in Dimensions", tabName = "ratings_change"),
-                                                 menuItem("Changes in Results", tabName = "outcome_changes"),
+                                                 menuItem("Expected Changes in Results", tabName = "expected_changes"),
+                                                 menuItem("Causes for Changes", tabName = "outcome_changes"),
+                                                 
                                                  # menuItem("Redoing activity", tabName = "redo",
                                                  #          menuSubItem("Original Study", tabName = "originalstudy"),
                                                  #          #menuSubItem("Description", tabName = "redo_desc"),
@@ -64,14 +66,6 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
          text-align: justify;
          /* Add any other desired styles here */
        }
-      
-      [title]:hover::after {
-        content: attr(title);
-        position: absolute;
-        font-size: 15px;
-        top: -100%;
-        left: 0;
-      }
      ")),
                       # tags$head(
                       #   HTML(
@@ -362,11 +356,14 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 textInput("RedoDOI", "If available, provide the DOI for easy reference to your study (preregistration, preprint, article).", width = '100%'), # Name
                                 textInput("OrigDOI", "Provide the DOI(s) for easy reference to the original work(s).", width = '100%'), # Name
                                 textInput("OrigTitle", "If the DOI was not available, provide the title(s) of the original study", width = '100%'), # Name
-                                textInput("Objective", "Briefly describe the main objectives or research questions of your redoing study.", width = '100%'), # Name
+                                textAreaInput("Objective", "Briefly describe the main objectives or research questions of your redoing study.", width = '100%', height="20%"), # Name
                                 textInput("RedoingLabel", "Give a brief name of the redoing activity (such as replication, reproduction, generalization test, robustness check, etc.)", width = '100%'), # Name
                                 selectInput("Status", "What is the current status of your redoing activity?",
                                             choices=c("Planning", "Ongoing", "Completed but not publicly available", "Completed with publicly available preprint", 
-                                          "Completed with publicly available peer-reviewed article"), width = '100%')
+                                          "Completed with publicly available peer-reviewed article"), width = '90%'),
+                                radioGroupButtons("Observedchange", "If you already completed your redoing study, to what extend was the outcome of your study different from the original study?",
+                                                  choices=c("Not at all different", "Slightly different", "Substantially different", "Unknown/uncontrolled", "Not applicable")),
+                                
                                 
                         ),
                         # tabItem(tabName = "redo_desc",
@@ -381,46 +378,48 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                         tabItem(tabName = "ratings_change",
                                 fluidRow(
                                 h4(strong("Objective change")),
-                                p("Please indicate to which extend your redoing activity deviates from the initial study across the different dimensions. (Hover over dimensions for detailed explanation.)", class="custom-text"),
+                                p("Was there a quantitative/qualitative change along these dimensions relative to the original study? (Hover over dimensions for detailed explanation.)", class="custom-text"),
                                 shinysurveys::radioMatrixInput(
-                                  "ratingmatrix_objchanges",
-                                  responseItems= aspects_matrix_span, 
-                                  choices = options_matrix, .required=FALSE
+                                  inputId="ratingmatrix_objchanges",
+                                  responseItems= aspects_matrix_span_objchanges, 
+                                  choices = options_matrix_objective, .required=FALSE
                                 ),
                                 # textInput("rep_dims", "If any relevant dimension was missed above, please specify which dimension you specifically changed or kept constant in your study.", placeholder = "..."),
                                 # ),
-                                
-                                h4(strong("Expected impact of the change on the results")),
-                                p("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions for detailed explanation.)", class="custom-text"),
-                                shinysurveys::radioMatrixInput(
-                                  "ratingmatrix_expectations",
-                                  responseItems= aspects_matrix_span, 
-                                  choices = options_matrix_expectations, .required=FALSE
-                                ),
                                 h4(strong("Reasons for the change or lack of change")),
-                                p("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions for detailed explanation.)", class="custom-text"),
+                                p("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions for detailed explanation.) Please select 'Not applicable', if there were no changes on the respective dimension.", class="custom-text"),
                                 shinysurveys::radioMatrixInput(
-                                  "ratingmatrix_intentions",
-                                  responseItems= aspects_matrix_span, 
+                                  inputId="ratingmatrix_intentions",
+                                  responseItems= aspects_matrix_span_intentions, 
                                   choices = options_matrix_intentions, .required=FALSE
                                 )
                                 )
                         ),
-                        tabItem(tabName = "outcome_changes",
-                                h1(strong("NOTE: I think this was not thought to be part of the first (short) survey. We also have no wording for this provided by the other groups. We could either get feedback from them or leave this page completely!")),
-                                h2(strong("Observed differences")),
-                                p("This page is about the actual observed outcome of your redoing activity. If you have not yet conducted and analyzed the redoing study, please skip this page and go on to the end of the survey", class="custom-text"),
-                                radioGroupButtons("observedchange", "To what extend did the results from your redoing study deviate from the results of the original study?",
-                                                  choices=c("No difference at all", "Slight differences", "Substantial differences", "Unknown/uncontrolled")),
-                                h4(strong("Suspected cause of difference in results")),
-                                p("If there were differences in the results of your study compared to the original study, to what extent do you suspect that any changes in the dimensions were the cause of this? (Hover over dimensions for detailed explanation.)", class="custom-text"),
+                        tabItem(tabName = "expected_changes",
+                                h2(strong("Expected impact on the change of the results")),
+                                p("This question is about whether you expect the changes to have an impact on the results of the study. If you have already conducted the study and know the results, please indicate this here and skip the rating question!", class="custom-text"),br(),
+                                shiny::checkboxInput("NoExpectations", "Already have results", FALSE), 
+                                p("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions for detailed explanation.) Please select 'Not applicable', if there were no changes on the respective dimension.", class="custom-text"),
                                 shinysurveys::radioMatrixInput(
-                                  "ratingmatrix_cause_changes",
-                                  responseItems= aspects_matrix_span,
+                                  inputId="ratingmatrix_expectations",
+                                  responseItems= aspects_matrix_span_expectedchanges, 
+                                  choices = options_matrix_expectations, .required=FALSE
+                                )
+                        ),
+                        tabItem(tabName = "outcome_changes",
+                                h2(strong("Observed differences")),
+                                p("This page is about the actual observed outcome of your redoing activity. If you have not yet conducted and analyzed the redoing study and observed differences in the results compared to the original study, please indicate this by checking the box and skip the rating question.", class="custom-text"),
+                                shiny::checkboxInput("NoDifference", "No results or observed differences", FALSE), 
+                                h4(strong("Observed/inferred impact on the change of the results")),
+                                p("What is the observed or inferred impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions for detailed explanation.) Please select 'Not applicable', if there were no changes on the respective dimension.", class="custom-text"),
+                                shinysurveys::radioMatrixInput(
+                                  inputId="ratingmatrix_cause_changes",
+                                  responseItems= aspects_matrix_span_causechanges,
                                   choices = options_matrix_causechanges, .required=FALSE
                                 )
-
+                                
                         ),
+
                         # tabItem(tabName = "exp_f",
                         #         h3("Below are brief descriptions of the decisions 
                         #         applied to graph-theoretic analyses of the whole 
@@ -440,12 +439,12 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                         br(),
                                 textAreaInput("additional_info", "Here is enough space for additonal comments:", "", width = '80%', height='40%'),
                         br(),
-                        radioButtons("part_conf2",
+                        radioButtons(inputId="part_conf2",
                                      "Please confirm once again your initial consent for the 
                                      anonymized evaluation of the responses or revoke it.",
                                      choiceNames = list("I revoke my consent, please delete my data.", 
                                                       "I still agree with the evaluation of my responses."),
-                                     choiceValues = list("No", "Yes"), selected = "No"),
+                                     choiceValues = list("No", "Yes"), selected = "Yes"),
                         
                         actionButton("end_survey", "End Survey and submit answers")
                         )
