@@ -28,7 +28,7 @@ server <- function(input, output, session){
   
   ## Next and previous button
   tab_id <- c("about", "study", "originalstudy", 
-              "rating_obj", "rating_exp", "rating_intent", "comment")
+              "ratings_change", "outcome_changes", "comment")
   
   # observe({
   #   lapply(c("Next", "Previous"),
@@ -72,7 +72,7 @@ server <- function(input, output, session){
   observeEvent(
     input[["Next"]],
     {
-      if (Current$Tab == "rating_obj" && is.null(input[["ratingmatrix1"]])) {
+      if (Current$Tab == "rating_changes" && is.null(input[["ratingmatrix_objchanges"]])) {
         showModal(modalDialog(
           title = "Warning",
           "Please indicate the difference in all dimensions!",
@@ -170,62 +170,55 @@ server <- function(input, output, session){
   
   
   ## Create table for the survey
-  PartInputNames <- c(question$Code)
-  QualInputNames <- c("rep_description", "rep_label", "rep_dims")
-  RatingInputNames <- c("ratingmatrix1")
+  StudyInputs <- c("RedoDOI", "OrigDOI",
+  "OrigTitle","Objective",
+  "RedoingLabel","Status")
+#  QualInputNames <- c("rep_description", "rep_label", "rep_dims")
+  RatingInputNames <- c("ratingmatrix_objchanges",
+                        "ratingmatrix_expectations",
+                        "ratingmatrix_intentions",
+                        "ratingmatrix_cause_changes")
+  
+  OutcomeInputNames <- c("observedchange")
   
   participantInputs <- reactive({
     data <- data.frame()
-    for (name in PartInputNames) {
-      #if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-      options <- paste(input[[name]], collapse = ";")
-      data <- rbind(data, data.frame(Class = "part", Name = name, Response = options))
-      #}
+    for (name in StudyInputs) {
+      if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
+        #options <- paste(input[[name]], collapse = ";")
+        data <- rbind(data, 
+                      data.frame(Class = "study", Name = name, Response = input[[name]]))
+      }
     }
-    for (name in QualInputNames) {
-      #if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-      options <- paste(input[[name]], collapse = ";")
-      data <- rbind(data, data.frame(Class = "qual", Name = name, Response = options))
-      #}
-    }
+    # for (name in QualInputNames) {
+    #   if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
+    #     options <- paste(input[[name]], collapse = ";")
+    #     data <- rbind(data, data.frame(Class = "qual", Name = name, Response = options))
+    #   }
+    # }
     for (name in RatingInputNames) {
-      #if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-      cur_matrix <- input[[name]]
-      data <- rbind(data, data.frame(Class = "rating", Name = paste0(name, "_", cur_matrix$question_id), Response = cur_matrix$response))
-      #}
+      if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
+        cur_matrix <- input[[name]]
+        data <- rbind(data, data.frame(Class = "rating", Name = paste0(name, "_", 
+                                                                       aspects_matrix[match(cur_matrix$question_id, aspects_matrix_span)]), 
+                                                                       Response = cur_matrix$response))
+      }
+    }
+    for (name in OutcomeInputNames) {
+      if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
+        data <- rbind(data, 
+                      data.frame(Class = "results", Name = name, Response = input[[name]]))
+      }
     }
     data <- rbind(data, data.frame(Class="additional", Name="comment", Response = input[["additional_info"]]))
   })
 
-  observeEvent(input[["Next"]], {
-    cat("rep_label:", input$rep_label, "\n")
-    print(input$ratingmatrix1)
-  })
-  #  ## Create table for equivalence
-  # selectInputNamesE <- c(equival$Code[40:length(equival$Code)])
-  # userInputsE <- reactive({
-  #   dataE <- data.frame()
-  #   for (nameE in selectInputNamesE) {
-  #     #if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-  #     optionsE <- paste(input[[nameE]], collapse = ";")
-  #     dataE <- rbind(dataE, data.frame(Name = nameE, Selection = optionsE))
-  #     #}
-  #   }
-  #   dataE
+  ### For debugging:
+  # observeEvent(input[["Next"]], {
+  #   cat("rep_label:", input$rep_label, "\n")
+  #   print(input$ratingmatrix1)
   # })
-  
-  
-  # output$keepAlive <- renderText({
-  #   req(input$count)
-  #   paste("Count", input$count)
-  # })
-  
-  # autoInvalidate <- reactiveTimer(59000)
-  # observe({
-  #   autoInvalidate()
-  #   cat(".")
-  # })
-  
+
   
 
 ### Submit button

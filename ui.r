@@ -38,15 +38,18 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                     dashboardSidebar(width = 270,
                                      sidebarMenu(id = "tabs", style = "position: fixed; overflow: auto; width: 270px;",
                                                  menuItem("Welcome", tabName = "about"),
-                                                 menuItem("Study information", tabName = "study"),
+                                                 menuItem("Survey Information", tabName = "study"),
                                                  #menuItem("Participant information", tabName = "person"),
-                                                 menuItem("Redoing activity", tabName = "redo",
-                                                          menuSubItem("Original Study", tabName = "originalstudy"),
-                                                          #menuSubItem("Description", tabName = "redo_desc"),
-                                                          menuSubItem("Rating of objective change", tabName = "rating_obj"),
-                                                          menuSubItem("Rating of expected difference", tabName = "rating_exp"),
-                                                          menuSubItem("Rating of intentions", tabName = "rating_intent")
-                                                 ),
+                                                 menuItem("General redoing Information", tabName = "originalstudy"),
+                                                 menuItem("Changes in Dimensions", tabName = "ratings_change"),
+                                                 menuItem("Changes in Results", tabName = "outcome_changes"),
+                                                 # menuItem("Redoing activity", tabName = "redo",
+                                                 #          menuSubItem("Original Study", tabName = "originalstudy"),
+                                                 #          #menuSubItem("Description", tabName = "redo_desc"),
+                                                 #          menuItem("Changes in Dimensions", tabName = "ratings_change"),
+                                                 #          menuSubItem("Rating of expected difference", tabName = "rating_exp"),
+                                                 #          menuSubItem("Rating of intentions", tabName = "rating_intent")
+                                                 # ),
                                                  menuItem("Comments", tabName = "comment")
                                      )
                     ),
@@ -57,10 +60,18 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                       tags$style(HTML("
        .custom-text {
          color: black;
-         font-size: 20px;
+         font-size: 18px;
          text-align: justify;
          /* Add any other desired styles here */
        }
+      
+      [title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        font-size: 15px;
+        top: -100%;
+        left: 0;
+      }
      ")),
                       # tags$head(
                       #   HTML(
@@ -360,62 +371,55 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                         ),
                         # tabItem(tabName = "redo_desc",
                         #         h2(strong("Dummy page for descriptive questions (Part 4 Dimensions of comparison)?")),
-                        #         p("Now, think of your most recent re-doing/replication activity (if available)."),
-                        #         textInput("rep_description", "Please describe this re-doing actitivy briefly.",
+                        #         p("Now, think of your most recent redoing/replication activity (if available)."),
+                        #         textInput("rep_description", "Please describe this redoing actitivy briefly.",
                         #                   placeholder = "..."),
-                        #         textInput("rep_label", "How would you call this kind of re-doing activity? (E.g. reproduction, direct replication, conceptual replication,...)",
+                        #         textInput("rep_label", "How would you call this kind of redoing activity? (E.g. reproduction, direct replication, conceptual replication,...)",
                         #                   placeholder = "Conceptual replication, reproducitibility check,...")
                         #         
                         # ),
-                        tabItem(tabName = "rating_obj",
+                        tabItem(tabName = "ratings_change",
                                 fluidRow(
-                                h3(strong("Please indicate to which extend your re-doing activity deviates from the initial study across the different dimensions.")),
-                                
-                                popify(radioGroupButtons(inputId = "rating_obj_input",
-                                                  label = desc_dims[["Dimension"]][1],
-                                                  choices = c("Not at all different", "Slighly different", "Substantially different", "Unknown/uncontrolled", "Not applicable"),
-                                                  direction="horizontal", justified = TRUE),
-                                
-                                       "This includes the demographics, number, and selection criteria of participants. Authors could specify if the replication involved participants with similar characteristics (age, gender, cultural background) or if they varied these to examine effects across different groups.", placement = "left", options = list(container = "body")),
-                                
-                                # radioGroupButtons(inputId = "rating_obj_input", 
-                                #                   label = desc_dims[["Dimension"]][1],
-                                #                   choiceNames = rep("", 5), choiceValues = 1:5,
-                                #                   direction="horizontal", justified = TRUE)
-                                  
+                                h4(strong("Objective change")),
+                                p("Please indicate to which extend your redoing activity deviates from the initial study across the different dimensions. (Hover over dimensions for detailed explanation.)", class="custom-text"),
                                 shinysurveys::radioMatrixInput(
-                                  "ratingmatrix1",
-                                  responseItems= aspects_matrix, choices = options_matrix, .required=FALSE
+                                  "ratingmatrix_objchanges",
+                                  responseItems= aspects_matrix_span, 
+                                  choices = options_matrix, .required=FALSE
                                 ),
-                                textInput("rep_dims", "If any relevant dimension was missed above, please specify which dimension you specifically changed or kept constant in your study.", placeholder = "..."),
+                                # textInput("rep_dims", "If any relevant dimension was missed above, please specify which dimension you specifically changed or kept constant in your study.", placeholder = "..."),
+                                # ),
+                                
+                                h4(strong("Expected impact of the change on the results")),
+                                p("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions for detailed explanation.)", class="custom-text"),
+                                shinysurveys::radioMatrixInput(
+                                  "ratingmatrix_expectations",
+                                  responseItems= aspects_matrix_span, 
+                                  choices = options_matrix_expectations, .required=FALSE
                                 ),
-                                h2(strong("Click on the dimensions for a detailed description")),
-                                fluidRow(
-                                  do.call(accordion, c(list(id = "descr_accordion1", width=4),# ,open=FALSE),
-                                                       lapply(1:4, function(i){
-                                                         accordionItem(
-                                                           title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
-                                                         )
-                                                       }))),
-                                  do.call(accordion, c(list(id = "descr_accordion2", width=4),# ,open=FALSE),
-                                                       lapply(5:8, function(i){
-                                                         accordionItem(
-                                                           title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
-                                                         )
-                                                       }))),
-                                  do.call(accordion, c(list(id = "descr_accordion3", width=4),# ,open=FALSE),
-                                                       lapply(9:11, function(i){
-                                                         accordionItem(
-                                                           title = desc_dims[['Dimension']][i], p(desc_dims[['Description']][i])#, solidHeader = FALSE
-                                                         )
-                                                       })))
+                                h4(strong("Reasons for the change or lack of change")),
+                                p("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions for detailed explanation.)", class="custom-text"),
+                                shinysurveys::radioMatrixInput(
+                                  "ratingmatrix_intentions",
+                                  responseItems= aspects_matrix_span, 
+                                  choices = options_matrix_intentions, .required=FALSE
+                                )
                                 )
                         ),
-                        tabItem(tabName = "rating_exp",
-                                h2(strong("Dummy page for rating the dimensions of comparison in terms of expected influence on outcome"))
-                        ),
-                        tabItem(tabName = "rating_intent",
-                                h2(strong("Dummy page for rating the dimensions of comparison in terms of the intention/reason for differences ...?"))
+                        tabItem(tabName = "outcome_changes",
+                                h1(strong("NOTE: I think this was not thought to be part of the first (short) survey. We also have no wording for this provided by the other groups. We could either get feedback from them or leave this page completely!")),
+                                h2(strong("Observed differences")),
+                                p("This page is about the actual observed outcome of your redoing activity. If you have not yet conducted and analyzed the redoing study, please skip this page and go on to the end of the survey", class="custom-text"),
+                                radioGroupButtons("observedchange", "To what extend did the results from your redoing study deviate from the results of the original study?",
+                                                  choices=c("No difference at all", "Slight differences", "Substantial differences", "Unknown/uncontrolled")),
+                                h4(strong("Suspected cause of difference in results")),
+                                p("If there were differences in the results of your study compared to the original study, to what extent do you suspect that any changes in the dimensions were the cause of this? (Hover over dimensions for detailed explanation.)", class="custom-text"),
+                                shinysurveys::radioMatrixInput(
+                                  "ratingmatrix_cause_changes",
+                                  responseItems= aspects_matrix_span,
+                                  choices = options_matrix_causechanges, .required=FALSE
+                                )
+
                         ),
                         # tabItem(tabName = "exp_f",
                         #         h3("Below are brief descriptions of the decisions 
