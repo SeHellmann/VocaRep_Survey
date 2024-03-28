@@ -307,26 +307,14 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   involves providing some basic information and agreeing to the terms outlined. 
                                   We will be collecting data to analyze various dimensions of “redoing” studies, 
                                   with a commitment to transparency and ethical standards.",br(),br(),
-                                  "Next, we will gather some details about you as a researcher, including your 
-                                  ORCID iD (if available), name, affiliation, position, field of study, years of 
-                                  research experience, and any previous experience with “redoing” studies. These 
-                                  details will help us contextualize your responses within the broader research 
-                                  community.",br(),br(),
-                                  "In this section, you will have the opportunity to describe “redoing” studies 
+                                  "In this section, you will have the opportunity to describe the “redoing” study 
                                   you are planning, conducting, or have completed. We will ask for information 
-                                  such as the DOI of the “redoing” study, title, collaborators, DOI of the 
-                                  original study, objectives, status, pre-registration link (if available), and 
-                                  your role in the study.",br(),br(),
-                                  "For each 'redoing' study, we will ask you to list and describe the dimensions 
-                                  along which the study was intentionally kept the same or varied relative to the 
-                                  original studies. This will help us understand the nuances of your replication 
-                                  efforts.",br(),br(),
-                                  "You will then match these dimensions to predetermined categories such as data, 
-                                  participant population, procedures, interventions, measures, materials, setting, 
-                                  data analysis methods, research questions, theoretical frameworks, and contextual 
-                                  factors.",br(),br(),
-                                  "Finally, you will rate each study along the dimensions identified, indicating 
-                                  the degree of change or difference between the “redoing” study and the original. 
+                                  such as the DOI of the “redoing” study, DOI of the 
+                                  original study, objectives, status, and the outcome of the study (if known).",br(),br(),
+                                  "Next, you will rate the differences between your “redoing” study and the original study,
+                                  along the dimensions such as empirical data, participant population, independent variables and interventions, 
+                                  dependent variables and outcome measures, procedures and settings, data analysis methods, and
+                                  research question, hypotheses and theoretical frameworks.
                                   This will provide valuable insights into the replication process and its outcomes.
                                   Thank you for your participation. Your input is instrumental in advancing our 
                                   understanding of “redoing” studies and promoting transparency and rigor in research 
