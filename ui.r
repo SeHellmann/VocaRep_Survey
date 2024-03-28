@@ -38,7 +38,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                     dashboardSidebar(width = 270,
                                      sidebarMenu(id = "tabs", style = "position: fixed; overflow: auto; width: 270px;",
                                                  menuItem("Welcome", tabName = "about"),
-                                                 menuItem("Survey Information", tabName = "study"),
+                                                 #menuItem("Survey Information", tabName = "study"),
                                                  #menuItem("Participant information", tabName = "person"),
                                                  menuItem("General redoing Information", tabName = "originalstudy"),
                                                  menuItem("Changes in Dimensions", tabName = "ratings_change"),
@@ -107,9 +107,21 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   scenarios and populations, with the ultimate aim of 
                                   bolstering the reliability of scientific inquiry. For 
                                   this, we need your help!",br(), br(),
-                                  "Our questionnaire will take about 5-10 minutes of your 
+                                  "Our questionnaire will take about 10 minutes of your 
                                   time, and we would ask you to fill in the questionnaire 
                                   on a PC/laptop (and not on your mobile phone).",br(), br(),
+                                  "At the outset, we will need your consent to proceed with the survey. This 
+                                  involves agreeing to the terms outlined. 
+                                  We will be collecting data to analyze various dimensions of “redoing” studies, 
+                                  with a commitment to transparency and ethical standards.",br(),br(),
+                                  "In the following section, you will have the opportunity to describe the “redoing” study 
+                                  you are planning, conducting, or have completed. We will ask for information 
+                                  such as the DOI of the “redoing” study, DOI of the 
+                                  original study, objectives, status, and the outcome of the study (if known).",br(),br(),
+                                  "Finally, you will rate the differences between your “redoing” study and the original study,
+                                  along the dimensions such as empirical data, participant population, independent variables and interventions, 
+                                  dependent variables and outcome measures, procedures and settings, data analysis methods, and
+                                  research question, hypotheses and theoretical frameworks.",br(), br(), 
                                   "Before you start with the questionnaire, we would like 
                                   to draw your attention to the following points about 
                                   the study listed below.",br(), br(),
@@ -296,30 +308,30 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 
                                   
                         ),
-                        tabItem(tabName="study", 
-                                h2("Study Information"),
-                                p("Dear Participant,",br(),br(),
-                                  "Thank you for participating in our survey. Before you begin, it is important 
-                                  to understand the purpose and structure of the information we are gathering. 
-                                  Your input will contribute to valuable research in the field of “redoing” 
-                                  studies and replication efforts.",br(),br(),
-                                  "At the outset, we will need your consent to proceed with the survey. This 
-                                  involves providing some basic information and agreeing to the terms outlined. 
-                                  We will be collecting data to analyze various dimensions of “redoing” studies, 
-                                  with a commitment to transparency and ethical standards.",br(),br(),
-                                  "In this section, you will have the opportunity to describe the “redoing” study 
-                                  you are planning, conducting, or have completed. We will ask for information 
-                                  such as the DOI of the “redoing” study, DOI of the 
-                                  original study, objectives, status, and the outcome of the study (if known).",br(),br(),
-                                  "Next, you will rate the differences between your “redoing” study and the original study,
-                                  along the dimensions such as empirical data, participant population, independent variables and interventions, 
-                                  dependent variables and outcome measures, procedures and settings, data analysis methods, and
-                                  research question, hypotheses and theoretical frameworks.
-                                  This will provide valuable insights into the replication process and its outcomes.
-                                  Thank you for your participation. Your input is instrumental in advancing our 
-                                  understanding of “redoing” studies and promoting transparency and rigor in research 
-                                  practices.", class="custom-text")
-                        ),
+                        #tabItem(tabName="study", 
+                        #        h2("Study Information"),
+                        #        p("Dear Participant,",br(),br(),
+                        #          "Thank you for participating in our survey. Before you begin, it is important 
+                        #          to understand the purpose and structure of the information we are gathering. 
+                        #          Your input will contribute to valuable research in the field of “redoing” 
+                        #          studies and replication efforts.",br(),br(),
+                        #          "At the outset, we will need your consent to proceed with the survey. This 
+                        #          involves providing some basic information and agreeing to the terms outlined. 
+                        #          We will be collecting data to analyze various dimensions of “redoing” studies, 
+                        #          with a commitment to transparency and ethical standards.",br(),br(),
+                        #          "In this section, you will have the opportunity to describe the “redoing” study 
+                        #          you are planning, conducting, or have completed. We will ask for information 
+                        #          such as the DOI of the “redoing” study, DOI of the 
+                        #          original study, objectives, status, and the outcome of the study (if known).",br(),br(),
+                        #          "Next, you will rate the differences between your “redoing” study and the original study,
+                        #          along the dimensions such as empirical data, participant population, independent variables and interventions, 
+                        #          dependent variables and outcome measures, procedures and settings, data analysis methods, and
+                        #          research question, hypotheses and theoretical frameworks.
+                        #          This will provide valuable insights into the replication process and its outcomes.
+                        #          Thank you for your participation. Your input is instrumental in advancing our 
+                        #          understanding of “redoing” studies and promoting transparency and rigor in research 
+                        #          practices.", class="custom-text")
+                        #),
                         # tabItem(tabName = "person",
                         #         h2("Participant information"),
                         #         box(
