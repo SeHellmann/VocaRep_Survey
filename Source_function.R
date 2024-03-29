@@ -58,9 +58,6 @@ for (i in 1:length(aspects_matrix)) {
   
 }
 
-n_options <- length(options_matrix)
-n_aspects <- length(aspects_matrix)
-
 # 
 # library(googledrive)
 # drive_auth(cache = here::here(".secrets"), email = TRUE)
