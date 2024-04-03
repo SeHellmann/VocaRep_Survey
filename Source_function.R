@@ -37,7 +37,7 @@ desc_dims <- gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/11ns4vgD
 # export(question, file="survey/Questions.xlsx")
 # export(desc_dims, file="survey/Dimensions.xlsx")
 
-options_matrix_objective <- c("Yes, there was a single change", "Yes, there was a set of changes", "No", "Unknown/ uncontrolled", "Not applicable", "Cannot answer")
+options_matrix_objective <- c("Yes, there was a set of changes", "Yes, there was a single change", "No", "Unknown/ uncontrolled", "Not applicable", "Cannot answer")
 options_matrix_intentions <- list("Theoretically motivated", "Pragmatically motivated", "Unmotivated", "Not applicable", "Cannot answer")
 options_matrix_expectations <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
 options_matrix_causechanges <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
