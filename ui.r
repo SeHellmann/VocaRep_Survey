@@ -401,7 +401,8 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 h2(strong("Expected impact of the change on the results")),
                                 p("This question is about whether you expect the changes to have an impact on the results of the study. If you have already conducted the study and know the results, please indicate this here and skip the rating question!", class="custom-text"),
                                 br(),
-                                shiny::checkboxInput("NoExpectations", "Already have results", FALSE),
+                                shiny::div(checkboxInput("NoExpectations", "Already have results", FALSE), style = "font-size: 18px !important;"
+                                ),
                                 br(), br(), br(),
                                 p(HTML("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
                                 shinysurveys::radioMatrixInput(
@@ -414,7 +415,8 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 h2(strong("Observed differences in the results")),
                                 p("This page is about the actual observed outcome of your redoing activity. If you have not yet conducted and analyzed the redoing study and observed differences in the results compared to the original study, please indicate this by checking the box and skip the rating question.", class="custom-text"),
                                 br(),
-                                shiny::checkboxInput("NoDifference", "No results or observed differences", FALSE),
+                                shiny::div(checkboxInput("NoDifference", "No results or observed differences", FALSE), style = "font-size: 18px !important;"
+                                ),
                                 br(), br(), br(),
                                 p(HTML("What is the observed or inferred impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
                                 shinysurveys::radioMatrixInput(
