@@ -379,6 +379,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 fluidRow(
                                 h4(strong("Objective change")),
                                 p("Was there a quantitative/qualitative change along these dimensions relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)", class="custom-text"),
+                                p(strong("Unknown/uncontrolled"), " means the dimension is relevant to the outcomes of the study, but it is unknown if the redoing study differed from the original study (e.g. because the information was not available in the original study or the dimensions was not controlled in the redoing study).", class="custom-text"),
                                 shinysurveys::radioMatrixInput(
                                   inputId="ratingmatrix_objchanges",
                                   responseItems= aspects_matrix_span_objchanges, 
