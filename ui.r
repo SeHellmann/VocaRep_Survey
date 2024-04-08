@@ -92,7 +92,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 p("Dear participant,",br(), br(),
                                   "Nowadays, many researchers re-do scientific activities 
                                   in multiple different forms as part of meta-scientific 
-                                  endeavors. As members of a study group within the",
+                                  endeavors. As members of a working group within the DFG Priority Program",
                                   tags$a(href='https://www.meta-rep.uni-muenchen.de/index.html', "Meta-Rep project,"),
                                   "we are conducting a survey to examine the 
                                   generalizability of scientific studies and theories. 
@@ -108,14 +108,13 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   involves agreeing to the terms outlined. 
                                   We will be collecting data to analyze various dimensions of “redoing” studies, 
                                   with a commitment to transparency and ethical standards.",br(),br(),
-                                  "In the following section, you will have the opportunity to describe the “redoing” study 
+                                  "In the following section, you will have the opportunity to describe a “redoing” study 
                                   you are planning, conducting, or have completed. We will ask for information 
                                   such as the DOI of the “redoing” study, DOI of the 
                                   original study, objectives, status, and the outcome of the study (if known).",br(),br(),
                                   "Finally, you will rate the differences between your “redoing” study and the original study,
-                                  along the dimensions such as empirical data, participant population, independent variables and interventions, 
-                                  dependent variables and outcome measures, procedures and settings, data analysis methods, and
-                                  research question, hypotheses and theoretical frameworks.",br(), br(), 
+                                  along different dimensions, such as empirical data, population, interventions, 
+                                   outcome measures, analysis , and research question, and theoretical frameworks.",br(), br(),
                                   "Before you start with the questionnaire, we would like 
                                   to draw your attention to the following points about 
                                   the study listed below.",br(), br(),
@@ -123,10 +122,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   "Prof. Dr. Felix Schönbrodt (LMU Munich) & the terminology 
                                   working group of the",
                                   tags$a(href='https://www.meta-rep.uni-muenchen.de/index.html', "Meta-Rep project"),br(), br(),
-                                  "Under the following headings, you will find more detailed 
-                                  information about the study and data protection information. 
-                                  Simply click on the individual questions if you would like
-                                  to receive further information.", class = "custom-text"),
+                                  class = "custom-text"),
                                 br(),
                                 accordion(
                                   id = "some_accordion_information",
@@ -167,7 +163,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                       the physical, physiological, genetic, mental, economic, cultural, or social 
                                       identity of that natural person. In the context of our standardized online 
                                       survey, no personal data about you will be collected. We only store 
-                                      information about the conference submission such as the DOI and title of 
+                                      information about the your “redoing” study such as the DOI and title of 
                                       the project.", class = "custom-text")
                                   ),
                                   accordionItem(
