@@ -374,7 +374,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                         tabItem(tabName = "ratings_change",
                                 fluidRow(
                                 h4(strong("Objective change")),
-                                p("Was there a quantitative/qualitative change along these dimensions relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)", class="custom-text"),
+                                p("Was there a quantitative/qualitative change along these dimensions relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)", class="custom-text"),
                                 p(strong("Unknown/uncontrolled"), " means the dimension is relevant to the outcomes of the study, but it is unknown if the redoing study differed from the original study (e.g. because the information was not available in the original study or the dimensions was not controlled in the redoing study).", class="custom-text"),
                                 shinysurveys::radioMatrixInput(
                                   inputId="ratingmatrix_objchanges",
@@ -385,7 +385,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 # ),
                                 br(), br(),
                                 h4(strong("Reasons for the change or lack of change")),
-                                p(HTML("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
+                                p(HTML("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
                                 shinysurveys::radioMatrixInput(
                                   inputId="ratingmatrix_intentions",
                                   responseItems=aspects_matrix_span_intentions, 
