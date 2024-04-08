@@ -414,7 +414,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 shiny::div(checkboxInput("NoDifference", "No results or observed differences", FALSE), style = "font-size: 18px !important;"
                                 ),
                                 br(), br(), br(),
-                                p(HTML("What is the observed or inferred impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
+                                p(HTML("What is the observed or inferred impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
                                 shinysurveys::radioMatrixInput(
                                   inputId="ratingmatrix_cause_changes",
                                   responseItems= aspects_matrix_span_causechanges,
