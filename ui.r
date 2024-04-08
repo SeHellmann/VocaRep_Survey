@@ -348,16 +348,16 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
 #####################################Do Your Own##############################################################
                         tabItem(tabName = "originalstudy",
                                 h2(strong("Information about the original study")),
-                                p("The following questions are about the original study, to wich your redoing actitivity refers to."),br(),
+                                p("The following questions are about your “redoing” study as well as the original study, to which  your redoing actitivity refers to."),br(),
                                 textInput("RedoDOI", "If available, provide the DOI for easy reference to your study (preregistration, preprint, article).", width = '100%'), # Name
-                                textInput("OrigDOI", "Provide the DOI(s) for easy reference to the original work(s).", width = '100%'), # Name
+                                textInput("OrigDOI", "Provide the DOI(s) for easy reference to the original work(s). Seperate multiple entries with semicolons", width = '100%'), # Name
                                 textInput("OrigTitle", "If the DOI was not available, provide the title(s) of the original study", width = '100%'), # Name
                                 textAreaInput("Objective", "Briefly describe the main objectives or research questions of your redoing study.", width = '100%', height="20%"), # Name
-                                textInput("RedoingLabel", "Give a brief name of the redoing activity (such as replication, reproduction, generalization test, robustness check, etc.)", width = '100%'), # Name
+                                textInput("RedoingLabel", "What would you call your redoing activity? (e.g., replication, reproduction, robustness check) Please separate multiple entries by semicolons.", width = '100%'), # Name
                                 selectInput("Status", "What is the current status of your redoing activity?",
                                             choices=c("Planning", "Ongoing", "Completed but not publicly available", "Completed with publicly available preprint", 
                                           "Completed with publicly available peer-reviewed article"), width = '90%'),
-                                radioGroupButtons("Observedchange", "If you already completed your redoing study, to what extend was the outcome of your study different from the original study?",
+                                radioGroupButtons("Observedchange", "If you already completed your redoing study, to what extent was the outcome of your study different from the original study?",
                                                   choices=c("Not at all different", "Slightly different", "Substantially different", "Unknown/uncontrolled", "Not applicable")),
                                 
                                 
