@@ -400,7 +400,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 shiny::div(checkboxInput("NoExpectations", "Already have results", FALSE), style = "font-size: 18px !important;"
                                 ),
                                 br(), br(), br(),
-                                p(HTML("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and keep mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
+                                p(HTML("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
                                 shinysurveys::radioMatrixInput(
                                   inputId="ratingmatrix_expectations",
                                   responseItems= aspects_matrix_span_expectedchanges, 
