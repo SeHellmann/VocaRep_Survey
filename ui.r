@@ -88,8 +88,8 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   in multiple different forms as part of meta-scientific 
                                   endeavors. As members of a working group within the DFG Priority Program",
                                   tags$a(href='https://www.meta-rep.uni-muenchen.de/index.html', "Meta-Rep project,"),
-                                  "we are conducting a survey to examine the 
-                                  generalizability of scientific studies and theories. 
+                                  "we are conducting a survey to examine the different ways in which generalizability of 
+                                  scientific findings can be investigated and tested.
                                   Our objective is to ascertain the extent to which 
                                   research findings can be applicable across diverse 
                                   scenarios and populations, with the ultimate aim of 
@@ -108,7 +108,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   original study, objectives, status, and the outcome of the study (if known).",br(),br(),
                                   "Finally, you will rate the differences between your “redoing” study and the original study,
                                   along different dimensions, such as empirical data, population, interventions, 
-                                   outcome measures, analysis , and research question, and theoretical frameworks.",br(), br(),
+                                   outcome measures, analysis, and research question, and theoretical frameworks.",br(), br(),
                                   "Before you start with the questionnaire, we would like 
                                   to draw your attention to the following points about 
                                   the study listed below.",br(), br(),
