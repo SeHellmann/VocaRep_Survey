@@ -211,7 +211,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                       documented comprehensively after all deadlines have expired.", class="custom-text")
                                   ),
                                   accordionItem(
-                                    title = "Will my data be shared or based on my data be published?",
+                                    title = "Will my data be shared or identifiable when published?",
                                     p("The data will be processed by our data processor. Data collection 
                                       is done via shinysurveys. The transmission of data is done with 
                                       end-to-end encryption and in accordance with the guidelines of the 
