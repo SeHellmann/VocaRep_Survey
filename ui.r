@@ -389,7 +389,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                         ),
                         tabItem(tabName = "impact",
                                 h2(strong("Expected or actual impact of the change on the results")),
-                                p("This question is about whether the changes have an actual or expected impact on the results of the re-doing study.", class="custom-text"),
+                                p("This question is about whether the changes have an actual or expected impact on the results of the redoing study.", class="custom-text"),
                                 br(),
                                 shiny::div(checkboxInput("is_result_observed", "We already have obtained results and know them", FALSE), style = "font-size: 18px !important;"
                                 ),
