@@ -344,8 +344,8 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 h2(strong("Information about the original study")),
                                 p("The following questions are about your “redoing” study as well as the original study, to which  your redoing actitivity refers to."),br(),
                                 textInput("RedoDOI", "If available, provide the DOI for easy reference to your study (preregistration, preprint, article).", width = '100%'), # Name
-                                textInput("OrigDOI", "Provide the DOI(s) for easy reference to the original work(s). Seperate multiple entries with semicolons", width = '100%'), # Name
-                                textInput("OrigTitle", "If the DOI was not available, provide the reference of the original study", width = '100%'), # Name
+                                textInput("OrigDOI", "Provide the DOI(s) for easy reference to the original work(s). Seperate multiple entries with semicolons.", width = '100%'), # Name
+                                textInput("OrigTitle", "If the DOI was not available, provide the reference of the original study.", width = '100%'), # Name
                                 textAreaInput("Objective", "Briefly describe the main objectives or research questions of your redoing study.", width = '100%', height="20%"), # Name
                                 textInput("RedoingLabel", "What would you call your redoing activity? (e.g., replication, reproduction, robustness check) Please separate multiple entries by semicolons.", width = '100%'), # Name
                                 selectInput("Status", "What is the current status of your redoing activity?",
