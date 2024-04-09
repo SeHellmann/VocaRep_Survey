@@ -14,9 +14,9 @@ library(shinyjs)
 #library(sortable)
 library(conflicted)
 #library(shinyalert)
-conflicts_prefer(shinydashboardPlus::dashboardPage)
-conflicts_prefer(shinydashboardPlus::dashboardSidebar)
-conflicts_prefer(shinydashboardPlus::dashboardHeader)
+#conflicts_prefer(shinydashboardPlus::dashboardPage)
+#conflicts_prefer(shinydashboardPlus::dashboardSidebar)
+#conflicts_prefer(shinydashboardPlus::dashboardHeader)
 conflicts_prefer(shinydashboardPlus::accordion)
 conflicts_prefer(shinydashboard::box)
 library(shinysurveys)
@@ -25,6 +25,7 @@ library(shinyBS)
 
 library(shinyWidgets)
 #radioGroupInput
+
 
 source("Source_function.R")
 
@@ -35,29 +36,23 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                     
                     
                     ##################End of Dashboard Header###############
-                    dashboardSidebar(width = 270,
-                                     sidebarMenu(id = "tabs", style = "position: fixed; overflow: auto; width: 270px;",
+                    dashboardSidebar(disable=TRUE,
+                                     sidebarMenu(id = "tabs",
                                                  menuItem("Welcome", tabName = "about"),
                                                  #menuItem("Survey Information", tabName = "study"),
                                                  #menuItem("Participant information", tabName = "person"),
                                                  menuItem("General redoing Information", tabName = "originalstudy"),
                                                  menuItem("Changes in Dimensions", tabName = "ratings_change"),
                                                  menuItem("Impact of Changes", tabName = "impact"),
-                                                 
-                                                 # menuItem("Redoing activity", tabName = "redo",
-                                                 #          menuSubItem("Original Study", tabName = "originalstudy"),
-                                                 #          #menuSubItem("Description", tabName = "redo_desc"),
-                                                 #          menuItem("Changes in Dimensions", tabName = "ratings_change"),
-                                                 #          menuSubItem("Rating of expected difference", tabName = "rating_exp"),
-                                                 #          menuSubItem("Rating of intentions", tabName = "rating_intent")
-                                                 # ),
                                                  menuItem("Comments", tabName = "comment")
                                      )
                     ),
                     ####################End of Dashboard Sidebar##################
                     dashboardBody(#style = "overflow: auto",
-                      tags$script('$(".sidebar-menu a[data-toggle=\'tabs\']").click(function(){window.scrollTo({top: 0});})'),
+                      #tags$script('$(".sidebar-menu a[data-toggle=\'tabs\']").click(function(){window.scrollTo({top: 0});})'),
                       tags$script(HTML("$('body').addClass('fixed');")),
+                      tags$script("document.getElementsByClassName('sidebar-toggle')[0].style.visibility = 'hidden';"),
+                      tags$script("document.getElementsByClassName('sidebar')[0].style.visibility = 'hidden';"),
                       tags$style(HTML("
        .custom-text {
          color: black;

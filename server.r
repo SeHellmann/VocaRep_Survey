@@ -19,6 +19,9 @@ library(googledrive)
 
 server <- function(input, output, session){
   #shinyalert(title = "Welcome!", text = "This survey has not been launched yet. Please just browse and do not post your answers. It will be launched soon.", type = "info")
+  
+  shinyjs::addClass(selector = "body", class = "sidebar-collapse")
+  
   ##Temp directory
   save_dir <- file.path(getwd(), "saved_data")
   dir.create(save_dir, showWarnings = FALSE)
