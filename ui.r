@@ -17,7 +17,7 @@ library(conflicted)
 conflicts_prefer(shinydashboardPlus::dashboardPage)
 conflicts_prefer(shinydashboardPlus::dashboardSidebar)
 conflicts_prefer(shinydashboardPlus::dashboardHeader)
-conflicts_prefer(shinydashboardPlus:: accordion)
+conflicts_prefer(shinydashboardPlus::accordion)
 conflicts_prefer(shinydashboard::box)
 library(shinysurveys)
 #shinysurveys::radioMatrixInput()
@@ -42,8 +42,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                                  #menuItem("Participant information", tabName = "person"),
                                                  menuItem("General redoing Information", tabName = "originalstudy"),
                                                  menuItem("Changes in Dimensions", tabName = "ratings_change"),
-                                                 menuItem("Expected Changes in Results", tabName = "expected_changes"),
-                                                 menuItem("Observed Changes in Results", tabName = "outcome_changes"),
+                                                 menuItem("Impact of Changes", tabName = "impact"),
                                                  
                                                  # menuItem("Redoing activity", tabName = "redo",
                                                  #          menuSubItem("Original Study", tabName = "originalstudy"),
@@ -351,7 +350,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 p("The following questions are about your “redoing” study as well as the original study, to which  your redoing actitivity refers to."),br(),
                                 textInput("RedoDOI", "If available, provide the DOI for easy reference to your study (preregistration, preprint, article).", width = '100%'), # Name
                                 textInput("OrigDOI", "Provide the DOI(s) for easy reference to the original work(s). Seperate multiple entries with semicolons", width = '100%'), # Name
-                                textInput("OrigTitle", "If the DOI was not available, provide the title(s) of the original study", width = '100%'), # Name
+                                textInput("OrigTitle", "If the DOI was not available, provide the reference of the original study", width = '100%'), # Name
                                 textAreaInput("Objective", "Briefly describe the main objectives or research questions of your redoing study.", width = '100%', height="20%"), # Name
                                 textInput("RedoingLabel", "What would you call your redoing activity? (e.g., replication, reproduction, robustness check) Please separate multiple entries by semicolons.", width = '100%'), # Name
                                 selectInput("Status", "What is the current status of your redoing activity?",
@@ -385,7 +384,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 # ),
                                 br(), br(),
                                 h4(strong("Reasons for the change or lack of change")),
-                                p(HTML("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
+                                p(HTML("What was the reason that the redoing study was changed or kept the same along this dimension, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension does not apply to your study."), class="custom-text"),
                                 shinysurveys::radioMatrixInput(
                                   inputId="ratingmatrix_intentions",
                                   responseItems=aspects_matrix_span_intentions, 
@@ -393,48 +392,16 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                 )
                                 )
                         ),
-                        tabItem(tabName = "expected_changes",
-                                h2(strong("Expected impact of the change on the results")),
-                                p("This question is about whether you expect the changes to have an impact on the results of the study. If you have already conducted the study and know the results, please indicate this here and skip the rating question!", class="custom-text"),
+                        tabItem(tabName = "impact",
+                                h2(strong("Expected or actual impact of the change on the results")),
+                                p("This question is about whether the changes have an actual or expected impact on the results of the re-doing study.", class="custom-text"),
                                 br(),
-                                shiny::div(checkboxInput("NoExpectations", "Already have results", FALSE), style = "font-size: 18px !important;"
+                                shiny::div(checkboxInput("is_result_observed", "We already have obtained results and know them", FALSE), style = "font-size: 18px !important;"
                                 ),
-                                br(), br(), br(),
-                                p(HTML("What is the expected impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
-                                shinysurveys::radioMatrixInput(
-                                  inputId="ratingmatrix_expectations",
-                                  responseItems= aspects_matrix_span_expectedchanges, 
-                                  choices = options_matrix_expectations, .required=FALSE
-                                )
-                        ),
-                        tabItem(tabName = "outcome_changes",
-                                h2(strong("Observed differences in the results")),
-                                p("This page is about the actual observed outcome of your redoing activity. If you have not yet conducted and analyzed the redoing study and observed differences in the results compared to the original study, please indicate this by checking the box and skip the rating question.", class="custom-text"),
-                                br(),
-                                shiny::div(checkboxInput("NoDifference", "No results or observed differences", FALSE), style = "font-size: 18px !important;"
-                                ),
-                                br(), br(), br(),
-                                p(HTML("What is the observed or inferred impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if there were no changes on the respective dimension."), class="custom-text"),
-                                shinysurveys::radioMatrixInput(
-                                  inputId="ratingmatrix_cause_changes",
-                                  responseItems= aspects_matrix_span_causechanges,
-                                  choices = options_matrix_causechanges, .required=FALSE
-                                )
-                                
+                                br(), 
+                                uiOutput("impact_tabs")
                         ),
 
-                        # tabItem(tabName = "exp_f",
-                        #         h3("Below are brief descriptions of the decisions 
-                        #         applied to graph-theoretic analyses of the whole 
-                        #         brain functional connectome. These have all been 
-                        #         made by the researchers contributing to the current 
-                        #         literature and have been extracted through a systematic 
-                        #         literature review and coding.  ", class = "custom-text"),
-                        #         h3("Steps"),
-                        #         DT::dataTableOutput("list_steps"),
-                        #         h3("Options"),
-                        #         DT::dataTableOutput("list_options")
-                        # ),
                         
                         tabItem("comment",
                         h3("Thank you for your participation!"),

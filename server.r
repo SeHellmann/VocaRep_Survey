@@ -28,7 +28,7 @@ server <- function(input, output, session){
   
   ## Next and previous button
   tab_id <- c("about", "originalstudy", 
-              "ratings_change", "expected_changes", "outcome_changes", "comment")
+              "ratings_change", "impact", "comment")
   
   # observe({
   #   lapply(c("Next", "Previous"),
@@ -81,20 +81,10 @@ server <- function(input, output, session){
           footer = modalButton("Close"),
           size = "l"
         ))
-      } else if (Current$Tab == "expected_changes" && (is.null(input[["ratingmatrix_expectations"]]) &&
-                 !input[["NoExpectations"]])) {
+      } else if (Current$Tab == "impact" && (is.null(input[["ratingmatrix_impact"]]))) {
         showModal(modalDialog(
           title = "Warning",
-          "Please state that you have already analyzed the results or indicate the expected influence on the outcome of all dimensions!",
-          easyClose = TRUE,
-          footer = modalButton("Close"),
-          size = "l"
-        ))
-      } else if (Current$Tab == "outcome_changes" && (is.null(input[["ratingmatrix_cause_changes"]]) &&
-                 !input[["NoDifference"]])) {
-        showModal(modalDialog(
-          title = "Warning",
-          "Please state that you have no different results or indicate the suspected influence on the difference in outcomes in all dimensions!",
+          "Please indicate the expected influence on the outcome of all dimensions!",
           easyClose = TRUE,
           footer = modalButton("Close"),
           size = "l"
@@ -117,6 +107,32 @@ server <- function(input, output, session){
   )
   
   
+  ## Dynamically create the matrix question 
+  ## "Expected/observed impact of the change on the results"
+  
+  output$impact_tabs <- renderUI({
+    if(input$is_result_observed == FALSE) {
+      list(
+        p(HTML("What is the <b>expected</b> impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension was identical in the redoing study."), class="custom-text"),
+      shinysurveys::radioMatrixInput(
+        inputId="ratingmatrix_impact",
+        responseItems= aspects_matrix_span_impact, 
+        choices = options_matrix_impact, .required=FALSE
+      ) 
+      )
+    } else {
+      list(
+        p(HTML("What is the <b>observed</b> impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension was identical in the redoing study."), class="custom-text"),
+        shinysurveys::radioMatrixInput(
+          inputId="ratingmatrix_impact",
+          responseItems= aspects_matrix_span_impact,
+          choices = options_matrix_impact, .required=FALSE
+        )
+      )
+    }
+  })
+  
+  
 
   ## For session tuning
   session$allowReconnect(TRUE)
@@ -125,12 +141,11 @@ server <- function(input, output, session){
   ## Create table for the survey
   StudyInputs <- c("RedoDOI", "OrigDOI",
   "OrigTitle","Objective",
-  "RedoingLabel","Status", "Observedchange")
+  "RedoingLabel","Status", "Observedchange", "is_result_observed")
 #  QualInputNames <- c("rep_description", "rep_label", "rep_dims")
   RatingInputNames <- c("ratingmatrix_objchanges",
                         "ratingmatrix_intentions",
-                        "ratingmatrix_expectations",
-                        "ratingmatrix_cause_changes")
+                        "ratingmatrix_impact")
   
   participantInputs <- reactive({
     data <- data.frame()

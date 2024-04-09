@@ -39,22 +39,20 @@ desc_dims <- gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/11ns4vgD
 
 options_matrix_objective <- c("Yes, there was a set of changes", "Yes, there was a single change", "No, it was identical", "Unknown/ uncontrolled", "Not applicable", "Cannot answer")
 options_matrix_intentions <- list("Theoretically motivated", "Pragmatically motivated", "Unmotivated", "Not applicable", "Cannot answer")
-options_matrix_expectations <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
-options_matrix_causechanges <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
+options_matrix_impact <- list("No Impact", "Slight Impact", "Strong Impact", "Unknown Impact", "Not applicable", "Cannot answer")
+
 
 
 aspects_matrix = desc_dims[["Dimension"]]
 #aspects_matrix_span <- list()
 aspects_matrix_span_objchanges <- list()
 aspects_matrix_span_intentions <- list()
-aspects_matrix_span_expectedchanges <- list()
-aspects_matrix_span_causechanges  <- list()
+aspects_matrix_span_impact <- list()
 for (i in 1:length(aspects_matrix)) {
   # The paste with blanks is a work around to omit the radio matrix inputs to be considered identical
   aspects_matrix_span_objchanges[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], " ")) 
   aspects_matrix_span_intentions[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "  ")) 
-  aspects_matrix_span_expectedchanges[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "   "))  
-  aspects_matrix_span_causechanges[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "    ")) 
+  aspects_matrix_span_impact[[i]] <- span(aspects_matrix[i], title=paste0(desc_dims[["Description"]][i], "   "))
   
 }
 
