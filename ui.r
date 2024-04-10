@@ -108,7 +108,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                   original study, objectives, status, and the outcome of the study (if known).",br(),br(),
                                   "Finally, you will rate the differences between your “redoing” study and the original study,
                                   along different dimensions, such as empirical data, population, interventions, 
-                                   outcome measures, analysis, and research question, and theoretical frameworks.",br(), br(),
+                                   outcome measures, analysis, research question, and theoretical frameworks.",br(), br(),
                                   "Before you start with the questionnaire, we would like 
                                   to draw your attention to the following points about 
                                   the study listed below.",br(), br(),
