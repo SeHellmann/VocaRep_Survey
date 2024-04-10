@@ -201,7 +201,9 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                                     title = "How can I revoke my consent?",
                                     p("You can withdraw your consent to participate in this study at any time 
                                       and without giving reasons by closing the browser window. This will not 
-                                      result in any disadvantages for you.", class="custom-text")
+                                      result in any disadvantages for you. If you wish to withdraw your consent 
+                                      and delete your data after completing the survey, 
+                                      please contact us by email at meta-rep_vocarep_survey@lists.lrz.de.", class="custom-text")
                                   ),
                                   accordionItem(
                                     title = "How long will my data be stored?",
