@@ -4,6 +4,9 @@ library(shinydashboardPlus)
 library(shinyjs)
 library(stringi)
 library(googledrive)
+## For rendering the report output
+library(rmarkdown)
+library(pagedown) # Optional for better PDF rendering
 #library(dplyr)
 #library(stringr)
 #library(png)
@@ -31,7 +34,7 @@ server <- function(input, output, session){
   
   ## Next and previous button
   tab_id <- c("about", "originalstudy", 
-              "ratings_change", "impact", "comment")
+              "ratings_change", "comment")
   
   # observe({
   #   lapply(c("Next", "Previous"),
@@ -84,14 +87,14 @@ server <- function(input, output, session){
           footer = modalButton("Close"),
           size = "l"
         ))
-      } else if (Current$Tab == "impact" && (is.null(input[["ratingmatrix_impact"]]))) {
-        showModal(modalDialog(
-          title = "Warning",
-          "Please indicate the expected influence on the outcome of all dimensions!",
-          easyClose = TRUE,
-          footer = modalButton("Close"),
-          size = "l"
-        ))
+      # } else if (Current$Tab == "impact" && (is.null(input[["ratingmatrix_impact"]]))) {
+      #   showModal(modalDialog(
+      #     title = "Warning",
+      #     "Please indicate the expected influence on the outcome of all dimensions!",
+      #     easyClose = TRUE,
+      #     footer = modalButton("Close"),
+      #     size = "l"
+      #   ))
       } else if (Current$Tab == "about" && (input[["part_conf1"]]!="Yes")) {
         showModal(modalDialog(
           title = "Please confirm your consent",
@@ -110,31 +113,31 @@ server <- function(input, output, session){
   )
   
   
-  ## Dynamically create the matrix question 
-  ## "Expected/observed impact of the change on the results"
-  
-  output$impact_tabs <- renderUI({
-    if(input$is_result_observed == FALSE) {
-      list(
-        p(HTML("What is the <b>expected</b> impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension was identical in the redoing study."), class="custom-text"),
-      shinysurveys::radioMatrixInput(
-        inputId="ratingmatrix_impact",
-        responseItems= aspects_matrix_span_impact, 
-        choices = options_matrix_impact, .required=FALSE
-      ) 
-      )
-    } else {
-      list(
-        p(HTML("What is the <b>observed</b> impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension was identical in the redoing study."), class="custom-text"),
-        shinysurveys::radioMatrixInput(
-          inputId="ratingmatrix_impact",
-          responseItems= aspects_matrix_span_impact,
-          choices = options_matrix_impact, .required=FALSE
-        )
-      )
-    }
-  })
-  
+  # ## Dynamically create the matrix question 
+  # ## "Expected/observed impact of the change on the results"
+  # 
+  # output$impact_tabs <- renderUI({
+  #   if(input$is_result_observed == FALSE) {
+  #     list(
+  #       p(HTML("What is the <b>expected</b> impact that the change on the respective dimensions of the redoing study would have on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension was identical in the redoing study."), class="custom-text"),
+  #     shinysurveys::radioMatrixInput(
+  #       inputId="ratingmatrix_impact",
+  #       responseItems= aspects_matrix_span_impact, 
+  #       choices = options_matrix_impact, .required=FALSE
+  #     ) 
+  #     )
+  #   } else {
+  #     list(
+  #       p(HTML("What is the <b>observed</b> impact that the change on this dimension of the redoing study has had on the results of the study, relative to the original study? (Hover over dimensions and hold the mouse still for detailed explanation.)<br/>Please select 'Not applicable', if the respective dimension was identical in the redoing study."), class="custom-text"),
+  #       shinysurveys::radioMatrixInput(
+  #         inputId="ratingmatrix_impact",
+  #         responseItems= aspects_matrix_span_impact,
+  #         choices = options_matrix_impact, .required=FALSE
+  #       )
+  #     )
+  #   }
+  # })
+  # 
   
 
   ## For session tuning
@@ -142,13 +145,12 @@ server <- function(input, output, session){
   
   
   ## Create table for the survey
-  StudyInputs <- c("RedoDOI", "OrigDOI",
+  StudyInputs <- c("RedoDOI", "OrigDOI","PreprintDOI", "RegistDOI",
   "OrigTitle","Objective",
-  "RedoingLabel","Status", "Observedchange", "is_result_observed")
+  "RedoingLabel","Status")
 #  QualInputNames <- c("rep_description", "rep_label", "rep_dims")
   RatingInputNames <- c("ratingmatrix_objchanges",
-                        "ratingmatrix_intentions",
-                        "ratingmatrix_impact")
+                        "ratingmatrix_intentions")
   
   participantInputs <- reactive({
     data <- data.frame()
@@ -159,12 +161,7 @@ server <- function(input, output, session){
                       data.frame(Class = "study", Name = name, Response = input[[name]]))
       }
     }
-    # for (name in QualInputNames) {
-    #   if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-    #     options <- paste(input[[name]], collapse = ";")
-    #     data <- rbind(data, data.frame(Class = "qual", Name = name, Response = options))
-    #   }
-    # }
+
     for (name in RatingInputNames) {
       if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
         cur_matrix <- input[[name]]
@@ -173,32 +170,20 @@ server <- function(input, output, session){
                                                                        Response = cur_matrix$response))
       }
     }
-    # for (name in OutcomeInputNames) {
-    #   if (!is.null(input[[name]]) && length(input[[name]]) > 0) {
-    #     data <- rbind(data, 
-    #                   data.frame(Class = "results", Name = name, Response = input[[name]]))
-    #   }
-    # }
+
     data <- rbind(data, data.frame(Class="additional", Name="comment", Response = input[["additional_info"]]))
   })
 
-  ### For debugging:
-  # observeEvent(input[["Next"]], {
-  #   cat("rep_label:", input$rep_label, "\n")
-  #   print(input$ratingmatrix1)
-  # })
-
-  
-
+  # Add some reactive path value
+  report_path <- reactiveVal(NULL)
+  html_path <- reactiveVal(NULL)
+  session_dir <- paste0("www/",session$token)
+  dir.create(session_dir, showWarnings = FALSE)
 ### Submit button
-observeEvent(input$end_survey, {
-    # data_to_save <- data.frame(ParticipantID = participant_id,
-    #                            Question = survey_question,
-    #                            ReplicationActivity = replication_activity,
-    #                            stringsAsFactors = FALSE)
-    # 
-    # write.csv(data_to_save, "survey_data.csv", row.names = FALSE)
-  if (input[["part_conf2"]]!="Yes") {
+observeEvent(input$compile_report, {
+
+  # Validate consent
+  if (input[["part_conf2"]] != "Yes") {
     showModal(modalDialog(
       title = "Warning",
       "Please confirm your consent to the participation.",
@@ -206,29 +191,104 @@ observeEvent(input$end_survey, {
       footer = modalButton("Close"),
       size = "l"
     ))
-  } else {
-    save_file_name <- sprintf("data_%s.txt", as.integer(Sys.time()))
-    full_save_file_name <- file.path(save_dir, save_file_name)
-    data_df <- participantInputs()
-    write.csv(data_df, file=full_save_file_name)
-    #drive_upload(full_save_file_name, path = as_id("1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb"), name = save_file_name)
-  #     https://drive.google.com/drive/folders/1Ut0RQ6P072CqV_XywXY_fH7g49RCbYwb?usp=sharing
-    showModal(modalDialog(
-      title = "Survey Ended!",
-      "Thank you for your participation. Your data has been saved. You can now close the survey.",
-      easyClose = TRUE,
-      footer = tagList(
-        modalButton("Close")
-      ),
-      size = "l"
-    ))
+    return()
   }
+  
+  # Show loading modal
+  showModal(modalDialog(
+    title = "Generating Report",
+    "Please wait while we compile your survey responses and generate the report...",
+    footer = NULL
+  ))
+  
+  # Prepare data for saving
+  data_df <- participantInputs()
+  save_file_name <- sprintf("data_%s.txt", as.integer(Sys.time()))
+  full_save_file_name <- file.path(save_dir, save_file_name)
+  write.csv(data_df, file = full_save_file_name)
+  
+  
+  # Prepare parameters for the report
+  params <- list(
+    OrigDOI     = input$OrigDOI,
+    RedoDOI     = input$RedoDOI,
+    PreprintDOI = input$PreprintDOI,
+    RegistDOI   = input$RegistDOI,
+    OrigTitle = input$OrigTitle,
+    Objective = input$Objective,
+    RedoingLabel = input$RedoingLabel,
+    Status = input$Status,
+    ratingmatrix_objchanges = input$ratingmatrix_objchanges,
+    ratingmatrix_intentions = input$ratingmatrix_intentions,
+    additional_info = input$additional_info,
+    survey_data = data_df  # Include the raw data for reference
+  )
+  print(dput(params))
+  tryCatch({
+    # Create temp files
+    temp_report <- tempfile(fileext = ".pdf", tmpdir = session_dir)
+    #temp_html <- tempfile(fileext = ".html", tmpdir = session_dir)
+    
+    # Render with MiKTeX
+    rmarkdown::render(
+      input = "report_template.Rmd",
+      output_file = temp_report,
+      params = params,
+      envir = new.env(),
+      output_format = pdf_document(
+        latex_engine = "xelatex",
+        pandoc_args = c("--pdf-engine=xelatex")
+      )
+    )
+    
+
+    # # Render HTML preview
+    # rmarkdown::render(
+    #   input = "report_template.Rmd",
+    #   output_file = temp_html,
+    #   output_format = "html_document",
+    #   params = params,
+    #   envir = new.env()
+    # )
+    showNotification(paste("PDF saved at:", temp_report))
+      # Store paths
+      report_path(temp_report)
+      
+      
+        # Display preview
+        output$report_preview <- renderUI({
+          tags$iframe(
+            src = temp_report,
+            width = "100%",
+            height = "800px",
+            style = "border: none;"
+          )
+        })
+  
+      removeModal()
+      
+      # Show success message
+      showNotification("Report generated successfully!", type = "message")
+      }, error = function(e) {
+        removeModal()
+        showNotification(paste("Error generating report:", e$message), type = "error")
+      })
 })
 
-
-  # session$onSessionEnded(function() {
-  #   # Delete the temporary directory and its contents
-  #   unlink(tmp_dir, recursive = TRUE, force = TRUE)
-  # })
+# Download handler
+output$download_report <- downloadHandler(
+  filename = function() {
+    paste0("Redoing_Study_Report_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
+  },
+  content = function(file) {
+    req(report_path())
+    if (file.exists(report_path())) {
+      file.copy(report_path(), file)
+    } else {
+      showNotification("Report file not found. Please regenerate the report.", type = "error")
+    }
+  },
+  contentType = "application/pdf"
+)
   
 }
