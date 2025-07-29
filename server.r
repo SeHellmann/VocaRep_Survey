@@ -7,6 +7,9 @@ library(googledrive)
 ## For rendering the report output
 library(rmarkdown)
 library(pagedown) # Optional for better PDF rendering
+library(readxl)
+library(gsheet)
+library(kableExtra)
 #library(dplyr)
 #library(stringr)
 #library(png)
