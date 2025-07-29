@@ -10,6 +10,7 @@ library(pagedown) # Optional for better PDF rendering
 library(readxl)
 library(gsheet)
 library(kableExtra)
+library(tinytex)
 #library(dplyr)
 #library(stringr)
 #library(png)
@@ -22,6 +23,10 @@ library(kableExtra)
 #library(sortable)
 #library(conflicted)
 #library(shinyalert)
+
+# #### For the first run, to install tex on the server          ######
+tinytex::install_tinytex() 
+# ####################################################################
 
 server <- function(input, output, session){
   #shinyalert(title = "Welcome!", text = "This survey has not been launched yet. Please just browse and do not post your answers. It will be launched soon.", type = "info")
