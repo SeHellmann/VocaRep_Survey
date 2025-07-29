@@ -173,12 +173,13 @@ server <- function(input, output, session){
 
     data <- rbind(data, data.frame(Class="additional", Name="comment", Response = input[["additional_info"]]))
   })
-
+  
+  
   # Add some reactive path value
   report_path <- reactiveVal(NULL)
-  html_path <- reactiveVal(NULL)
-  session_dir <- paste0("www/",session$token)
-  dir.create(session_dir, showWarnings = FALSE)
+  session_dir <- paste0("www/", session$token)
+  dir.create(session_dir, showWarnings = FALSE, recursive = TRUE)
+  
 ### Submit button
 observeEvent(input$compile_report, {
 
@@ -226,13 +227,15 @@ observeEvent(input$compile_report, {
   print(dput(params))
   tryCatch({
     # Create temp files
-    temp_report <- tempfile(fileext = ".pdf", tmpdir = session_dir)
+    # Create output filename
+    pdf_filename <- paste0("report_", format(Sys.time(), "%Y%m%d_%H%M%S"), ".pdf")
+    pdf_path <- file.path(session_dir, pdf_filename)
     #temp_html <- tempfile(fileext = ".html", tmpdir = session_dir)
     
     # Render with MiKTeX
     rmarkdown::render(
       input = "report_template.Rmd",
-      output_file = temp_report,
+      output_file = pdf_path,
       params = params,
       envir = new.env(),
       output_format = pdf_document(
@@ -250,15 +253,18 @@ observeEvent(input$compile_report, {
     #   params = params,
     #   envir = new.env()
     # )
-    showNotification(paste("PDF saved at:", temp_report))
-      # Store paths
-      report_path(temp_report)
+    
+    # Store relative path (without www/)
+    relative_path <- paste0(session$token, "/", pdf_filename)
+    report_path(relative_path)
+    
+    showNotification(paste("PDF saved at:", relative_path))
       
       
         # Display preview
         output$report_preview <- renderUI({
           tags$iframe(
-            src = temp_report,
+            src = relative_path,
             width = "100%",
             height = "800px",
             style = "border: none;"
@@ -282,13 +288,17 @@ output$download_report <- downloadHandler(
   },
   content = function(file) {
     req(report_path())
-    if (file.exists(report_path())) {
-      file.copy(report_path(), file)
+    full_path <- file.path("www", report_path())
+    if (file.exists(full_path)) {
+      file.copy(full_path, file)
     } else {
-      showNotification("Report file not found. Please regenerate the report.", type = "error")
+      showNotification(paste("File not found at:", full_path), type = "error")
     }
   },
   contentType = "application/pdf"
 )
-  
+# Clean up session files when session ends
+session$onSessionEnded(function() {
+  unlink(session_dir, recursive = TRUE)
+})
 }
