@@ -26,7 +26,7 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                     
                     
                     ##################End of Dashboard Header###############
-                    dashboardSidebar(disable=TRUE,
+                    dashboardSidebar(disable=FALSE,
                                      sidebarMenu(id = "tabs",
                                                  menuItem("Welcome", tabName = "about"),
                                                  #menuItem("Survey Information", tabName = "study"),
@@ -39,10 +39,10 @@ ui <- dashboardPage(title = "Replication Survey", skin = "black",
                     ),
                     ####################End of Dashboard Sidebar##################
                     dashboardBody(#style = "overflow: auto",
-                      #tags$script('$(".sidebar-menu a[data-toggle=\'tabs\']").click(function(){window.scrollTo({top: 0});})'),
-                      tags$script(HTML("$('body').addClass('fixed');")),
-                      tags$script("document.getElementsByClassName('sidebar-toggle')[0].style.visibility = 'hidden';"),
-                      tags$script("document.getElementsByClassName('sidebar')[0].style.visibility = 'hidden';"),
+                      tags$script('$(".sidebar-menu a[data-toggle=\'tabs\']").click(function(){window.scrollTo({top: 0});})'),
+                      # tags$script(HTML("$('body').addClass('fixed');")),
+                      # tags$script("document.getElementsByClassName('sidebar-toggle')[0].style.visibility = 'hidden';"),
+                      # tags$script("document.getElementsByClassName('sidebar')[0].style.visibility = 'hidden';"),
                       tags$style(HTML("
        .custom-text {
          color: black;
